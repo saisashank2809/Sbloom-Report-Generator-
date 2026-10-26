@@ -120,7 +120,7 @@ export const SeoAnnexure: React.FC<Props> = ({ doc, annexureLetter = 'E' }) => {
         </tbody>
       </table>
 
-      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure E — Search Engine Optimisation (SEO)</div>
+      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Search Engine Optimisation (SEO)</div>
     </div>
   );
 };

@@ -136,7 +136,7 @@ export const PaidAdsAnnexure: React.FC<Props> = ({ doc, annexureLetter = 'C' }) 
         </tbody>
       </table>
 
-      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure C — Paid Advertising Management</div>
+      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Paid Advertising Management</div>
     </div>
   );
 };

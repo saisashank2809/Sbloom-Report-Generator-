@@ -140,7 +140,7 @@ export const WebsiteAnnexure: React.FC<Props> = ({ doc, annexureLetter = 'D' }) 
         </tbody>
       </table>
 
-      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure D — Website Design, Development & Management</div>
+      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Website Design, Development & Management</div>
     </div>
   );
 };

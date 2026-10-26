@@ -35,7 +35,7 @@ export const DocumentContainer: React.FC<Props> = ({ doc, isEditable = false }) 
       {doc.selectedOfferings.socialMedia && (
         <SocialMediaAnnexure 
           doc={doc} 
-          annexureLetter="A" 
+          annexureLetter={pricing.annexureLetters.socialMedia} 
         />
       )}
 
@@ -43,7 +43,7 @@ export const DocumentContainer: React.FC<Props> = ({ doc, isEditable = false }) 
       {doc.selectedOfferings.gbp && (
         <GbpAnnexure 
           doc={doc} 
-          annexureLetter="B"
+          annexureLetter={pricing.annexureLetters.gbp}
           isComplimentaryBenefit={Boolean(doc.selectedOfferings.socialMedia)}
         />
       )}
@@ -52,7 +52,7 @@ export const DocumentContainer: React.FC<Props> = ({ doc, isEditable = false }) 
       {doc.selectedOfferings.paidAds && (
         <PaidAdsAnnexure 
           doc={doc} 
-          annexureLetter="C" 
+          annexureLetter={pricing.annexureLetters.paidAds} 
         />
       )}
 
@@ -60,7 +60,7 @@ export const DocumentContainer: React.FC<Props> = ({ doc, isEditable = false }) 
       {doc.selectedOfferings.website && (
         <WebsiteAnnexure 
           doc={doc} 
-          annexureLetter="D" 
+          annexureLetter={pricing.annexureLetters.website} 
         />
       )}
 
@@ -68,7 +68,7 @@ export const DocumentContainer: React.FC<Props> = ({ doc, isEditable = false }) 
       {doc.selectedOfferings.seo && (
         <SeoAnnexure 
           doc={doc} 
-          annexureLetter="E" 
+          annexureLetter={pricing.annexureLetters.seo} 
         />
       )}
 
@@ -76,12 +76,14 @@ export const DocumentContainer: React.FC<Props> = ({ doc, isEditable = false }) 
       <AnnexureFCommercialSOW 
         doc={doc} 
         pricing={pricing} 
+        annexureLetter={pricing.annexureLetters.commercialSOW} 
       />
 
       {/* 8. Annexure G: Customer Onboarding Checklist (If enabled) */}
       {doc.selectedOfferings.onboardingChecklist && (
         <AnnexureGOnboardingChecklist 
           doc={doc} 
+          annexureLetter={pricing.annexureLetters.onboardingChecklist} 
         />
       )}
     </div>

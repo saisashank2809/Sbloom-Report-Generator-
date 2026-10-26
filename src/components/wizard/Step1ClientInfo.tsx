@@ -81,8 +81,15 @@ export const Step1ClientInfo: React.FC<Props> = ({ clientInfo, onChange }) => {
           <textarea
             className="form-textarea"
             rows={2}
-            value={clientInfo.customerRegisteredAddress || clientInfo.address}
-            onChange={(e) => handleChange('customerRegisteredAddress', e.target.value)}
+            value={clientInfo.customerRegisteredAddress ?? clientInfo.address ?? ''}
+            onChange={(e) => {
+              const val = e.target.value;
+              onChange({
+                ...clientInfo,
+                customerRegisteredAddress: val,
+                address: val
+              });
+            }}
             placeholder="e.g. Plot No. 42, Health City, Chinna Gadhili, Arilova, Visakhapatnam - 530040"
           />
         </div>

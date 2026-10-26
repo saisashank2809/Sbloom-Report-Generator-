@@ -3,9 +3,10 @@ import type { DocumentData } from '../../types/document';
 
 interface Props {
   doc: DocumentData;
+  annexureLetter?: string;
 }
 
-export const AnnexureGOnboardingChecklist: React.FC<Props> = ({ doc }) => {
+export const AnnexureGOnboardingChecklist: React.FC<Props> = ({ doc, annexureLetter = 'G' }) => {
   const { clientInfo, onboarding } = doc;
 
   const checklistItems = [
@@ -55,7 +56,7 @@ export const AnnexureGOnboardingChecklist: React.FC<Props> = ({ doc }) => {
     <div className="doc-section doc-page-break">
       <div className="doc-annexure-header">
         <h2 className="annexure-title">
-          ANNEXURE G — CUSTOMER ONBOARDING CHECKLIST
+          ANNEXURE {annexureLetter} — CUSTOMER ONBOARDING CHECKLIST
         </h2>
         <p className="annexure-subtitle">
           Readiness prerequisites for project kickoff and operational onboarding.
@@ -129,7 +130,7 @@ export const AnnexureGOnboardingChecklist: React.FC<Props> = ({ doc }) => {
         </tbody>
       </table>
 
-      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure G — Customer Onboarding Checklist</div>
+      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Customer Onboarding Checklist</div>
     </div>
   );
 };

@@ -106,6 +106,7 @@ export const App: React.FC = () => {
           legalEntityName: '',
           representativeName: '',
           representativeTitle: '',
+          customerRegisteredAddress: '',
           address: '',
           phone: '',
           email: '',

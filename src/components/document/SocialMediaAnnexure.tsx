@@ -35,7 +35,7 @@ export const SocialMediaAnnexure: React.FC<Props> = ({ doc, annexureLetter = 'A'
         <tbody>
           <tr>
             <td className="doc-td-bold">Customer / brand / locations</td>
-            <td>{clientInfo.customerName} ({clientInfo.address})</td>
+            <td>{clientInfo.customerName} { (clientInfo.customerRegisteredAddress || clientInfo.address) ? `(${clientInfo.customerRegisteredAddress || clientInfo.address})` : '' }</td>
           </tr>
           <tr>
             <td className="doc-td-bold">Platforms</td>
@@ -132,7 +132,7 @@ export const SocialMediaAnnexure: React.FC<Props> = ({ doc, annexureLetter = 'A'
         </tbody>
       </table>
 
-      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure A — Social Media & Content Services</div>
+      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Social Media & Content Services</div>
     </div>
   );
 };

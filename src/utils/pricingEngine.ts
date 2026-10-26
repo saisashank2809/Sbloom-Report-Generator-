@@ -5,6 +5,15 @@ export interface PricingSummary {
   oneTimeTotal: number;
   totalMonthlySavings: number;
   attachedAnnexuresList: string[];
+  annexureLetters: {
+    socialMedia?: string;
+    gbp?: string;
+    paidAds?: string;
+    website?: string;
+    seo?: string;
+    commercialSOW: string;
+    onboardingChecklist?: string;
+  };
   breakdown: {
     serviceName: string;
     type: 'monthly' | 'one-time';
@@ -18,13 +27,21 @@ export interface PricingSummary {
 export function calculatePricingAndInclusions(doc: DocumentData): PricingSummary {
   const breakdown: PricingSummary['breakdown'] = [];
   const attachedAnnexuresList: string[] = [];
+  const annexureLetters: PricingSummary['annexureLetters'] = {
+    commercialSOW: 'A'
+  };
 
   let monthlyRecurringTotal = 0;
   let oneTimeTotal = 0;
   let totalMonthlySavings = 0;
 
-  // 1. Annexure A: Social Media & Content Services
+  let currentCode = 65; // ASCII 'A'
+  const getNextLetter = () => String.fromCharCode(currentCode++);
+
+  // 1. Social Media & Content Services
   if (doc.selectedOfferings.socialMedia) {
+    const letter = getNextLetter();
+    annexureLetters.socialMedia = letter;
     const smmPrice = doc.socialMedia.monthlyFee;
     monthlyRecurringTotal += smmPrice;
     breakdown.push({
@@ -35,11 +52,13 @@ export function calculatePricingAndInclusions(doc: DocumentData): PricingSummary
       isComplimentary: false,
       notes: `${doc.socialMedia.videoSupplier === 'agency_shoots' ? 'Agency Shoot' : 'Client Video'} | ${doc.socialMedia.trialPeriod}`
     });
-    attachedAnnexuresList.push('Annexure A: Social Media & Content Services');
+    attachedAnnexuresList.push(`Annexure ${letter}: Social Media & Content Services`);
   }
 
-  // 2. Annexure B: Google Business Profile (GBP) Management
+  // 2. Google Business Profile (GBP) Management
   if (doc.selectedOfferings.gbp) {
+    const letter = getNextLetter();
+    annexureLetters.gbp = letter;
     const isComplimentary = Boolean(doc.selectedOfferings.socialMedia);
     const finalGbpPrice = isComplimentary ? 0 : doc.gbp.monthlyFee;
     
@@ -57,11 +76,13 @@ export function calculatePricingAndInclusions(doc: DocumentData): PricingSummary
       isComplimentary: isComplimentary,
       notes: isComplimentary ? 'Agreed Complimentary Benefit (Free with Social Media)' : 'Standard Monthly Management'
     });
-    attachedAnnexuresList.push('Annexure B: Google Business Profile Management');
+    attachedAnnexuresList.push(`Annexure ${letter}: Google Business Profile Management`);
   }
 
-  // 3. Annexure C: Paid Advertising Management (Meta & Google)
+  // 3. Paid Advertising Management (Meta & Google)
   if (doc.selectedOfferings.paidAds) {
+    const letter = getNextLetter();
+    annexureLetters.paidAds = letter;
     const adsFee = doc.paidAds.agencyManagementFee;
     monthlyRecurringTotal += adsFee;
     breakdown.push({
@@ -72,11 +93,13 @@ export function calculatePricingAndInclusions(doc: DocumentData): PricingSummary
       isComplimentary: false,
       notes: `${doc.paidAds.accountStatus === 'new_account' ? 'New Account Setup' : 'Existing Account'} (Media spend paid directly to platforms)`
     });
-    attachedAnnexuresList.push('Annexure C: Paid Advertising Management');
+    attachedAnnexuresList.push(`Annexure ${letter}: Paid Advertising Management`);
   }
 
-  // 4. Annexure D: Website Design, Development & Management
+  // 4. Website Design, Development & Management
   if (doc.selectedOfferings.website) {
+    const letter = getNextLetter();
+    annexureLetters.website = letter;
     const devFee = doc.website.oneTimeFee || 5000;
     const maintFee = doc.website.monthlyMaintenanceFee || 0;
 
@@ -104,11 +127,13 @@ export function calculatePricingAndInclusions(doc: DocumentData): PricingSummary
       });
     }
 
-    attachedAnnexuresList.push('Annexure D: Website Design, Development & Management');
+    attachedAnnexuresList.push(`Annexure ${letter}: Website Design, Development & Management`);
   }
 
-  // 5. Annexure E: Search Engine Optimisation (SEO)
+  // 5. Search Engine Optimisation (SEO)
   if (doc.selectedOfferings.seo) {
+    const letter = getNextLetter();
+    annexureLetters.seo = letter;
     const seoFee = doc.seo.monthlyRetainer;
     monthlyRecurringTotal += seoFee;
     breakdown.push({
@@ -119,15 +144,19 @@ export function calculatePricingAndInclusions(doc: DocumentData): PricingSummary
       isComplimentary: false,
       notes: `${doc.seo.primaryKeywordsCount} Target Keywords | ${doc.seo.oneTimeSetupFee}`
     });
-    attachedAnnexuresList.push('Annexure E: Search Engine Optimisation (SEO)');
+    attachedAnnexuresList.push(`Annexure ${letter}: Search Engine Optimisation (SEO)`);
   }
 
-  // Annexure F: Consolidated Commercial Schedule (Always attached as master SOW)
-  attachedAnnexuresList.push('Annexure F: Consolidated Commercial Schedule / SOW');
+  // Consolidated Commercial Schedule (Always attached as master SOW)
+  const sowLetter = getNextLetter();
+  annexureLetters.commercialSOW = sowLetter;
+  attachedAnnexuresList.push(`Annexure ${sowLetter}: Consolidated Commercial Schedule / SOW`);
 
-  // Annexure G: Customer Onboarding Checklist (Optional / default on)
+  // Customer Onboarding Checklist (Optional / default on)
   if (doc.selectedOfferings.onboardingChecklist) {
-    attachedAnnexuresList.push('Annexure G: Customer Onboarding Checklist');
+    const checklistLetter = getNextLetter();
+    annexureLetters.onboardingChecklist = checklistLetter;
+    attachedAnnexuresList.push(`Annexure ${checklistLetter}: Customer Onboarding Checklist`);
   }
 
   return {
@@ -135,6 +164,7 @@ export function calculatePricingAndInclusions(doc: DocumentData): PricingSummary
     oneTimeTotal,
     totalMonthlySavings,
     attachedAnnexuresList,
+    annexureLetters,
     breakdown
   };
 }

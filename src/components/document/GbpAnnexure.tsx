@@ -130,7 +130,7 @@ export const GbpAnnexure: React.FC<Props> = ({
         </tbody>
       </table>
 
-      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure B — Google Business Profile Management</div>
+      <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Google Business Profile Management</div>
     </div>
   );
 };
