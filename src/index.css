@@ -2885,8 +2885,15 @@ tr {
   margin-bottom: 12px;
 }
 
-.invoice-brand-block {
+.invoice-left-col {
   flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.invoice-brand-block {
+  margin-bottom: 8px;
 }
 
 .invoice-brand-logo-wrap {
@@ -3032,15 +3039,9 @@ tr {
   color: #062544;
 }
 
-/* Middle Row: Bill To & Value Proposition Banner */
-.invoice-middle-row {
-  display: flex;
-  margin-bottom: 14px;
-}
-
+/* Bill To Details Column */
 .invoice-bill-to-col {
   width: 100%;
-  max-width: 520px;
 }
 
 .bill-to-title-tag {
@@ -3055,21 +3056,21 @@ tr {
   font-weight: 800;
   color: #062544;
   line-height: 1.2;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .bill-to-client-address {
   font-size: 0.68rem;
   color: #334155;
   line-height: 1.3;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   white-space: pre-line;
 }
 
 .bill-to-fields-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   font-size: 0.72rem;
 }
 

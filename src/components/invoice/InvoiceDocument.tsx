@@ -38,49 +38,91 @@ export const InvoiceDocument: React.FC<Props> = ({
       suppressContentEditableWarning={true}
       spellCheck={isEditable}
     >
-      {/* 1. Header Section */}
+      {/* 1. Header & Client Section (Left: Provider Info + Bill To, Right: Meta Card) */}
       <header className="invoice-header-row">
-        {/* Left: Brand & Provider Contact Info */}
-        <div className="invoice-brand-block">
-          <div className="invoice-brand-logo-wrap">
-            <img 
-              src="/invoice-medcy-logo.png" 
-              alt="MEDCY HEALTH TECH" 
-              className="invoice-logo-img" 
-              onError={(e) => {
-                // Graceful fallback to CSS stylized logo if image is blocked
-                const target = e.currentTarget;
-                target.style.display = 'none';
-                const fallback = target.nextElementSibling as HTMLElement;
-                if (fallback) fallback.style.display = 'block';
-              }}
-            />
-            <div className="invoice-logo-fallback" style={{ display: 'none' }}>
-              <div className="medcy-fallback-title">MEDCY</div>
-              <div className="medcy-fallback-sub">H E A L T H &nbsp; T E C H</div>
+        {/* Left Column: Brand & Bill To Info */}
+        <div className="invoice-left-col">
+          <div className="invoice-brand-block">
+            <div className="invoice-brand-logo-wrap">
+              <img 
+                src="/invoice-medcy-logo.png" 
+                alt="MEDCY HEALTH TECH" 
+                className="invoice-logo-img" 
+                onError={(e) => {
+                  // Graceful fallback to CSS stylized logo if image is blocked
+                  const target = e.currentTarget;
+                  target.style.display = 'none';
+                  const fallback = target.nextElementSibling as HTMLElement;
+                  if (fallback) fallback.style.display = 'block';
+                }}
+              />
+              <div className="invoice-logo-fallback" style={{ display: 'none' }}>
+                <div className="medcy-fallback-title">MEDCY</div>
+                <div className="medcy-fallback-sub">H E A L T H &nbsp; T E C H</div>
+              </div>
+            </div>
+
+            <div className="invoice-provider-subbrand">
+              {doc.provider.brandName}
+            </div>
+
+            <div className="invoice-provider-contacts">
+              <div className="contact-line">
+                <Mail size={12} className="contact-icon" />
+                <span>{doc.provider.email}</span>
+              </div>
+              <div className="contact-line">
+                <Phone size={12} className="contact-icon" />
+                <span>{doc.provider.phone}</span>
+              </div>
+              <div className="contact-line">
+                <Globe size={12} className="contact-icon" />
+                <span>{doc.provider.website.replace('https://', '').replace('/', '')}</span>
+              </div>
+              <div className="contact-line address-line">
+                <MapPin size={12} className="contact-icon" />
+                <span>{doc.provider.address}</span>
+              </div>
             </div>
           </div>
 
-          <div className="invoice-provider-subbrand">
-            {doc.provider.brandName}
-          </div>
+          {/* Bill To Details immediately below provider contacts with reduced, tight spacing */}
+          <div className="invoice-bill-to-col">
+            <div className="bill-to-title-tag">Bill To</div>
+            <h2 className="bill-to-client-name">{doc.clientInfo.customerName}</h2>
+            <div className="bill-to-client-address">{doc.clientInfo.address}</div>
 
-          <div className="invoice-provider-contacts">
-            <div className="contact-line">
-              <Mail size={12} className="contact-icon" />
-              <span>{doc.provider.email}</span>
-            </div>
-            <div className="contact-line">
-              <Phone size={12} className="contact-icon" />
-              <span>{doc.provider.phone}</span>
-            </div>
-            <div className="contact-line">
-              <Globe size={12} className="contact-icon" />
-              <span>{doc.provider.website.replace('https://', '').replace('/', '')}</span>
-            </div>
-            <div className="contact-line address-line">
-              <MapPin size={12} className="contact-icon" />
-              <span>{doc.provider.address}</span>
+            <div className="bill-to-fields-list">
+              <div className="bill-field-row">
+                <span className="bill-field-label">Billing Address & Branches</span>
+                <span className="bill-field-colon">:</span>
+                <span className="bill-field-value underline-field">{doc.clientInfo.branches}</span>
+              </div>
+              <div className="bill-field-row">
+                <span className="bill-field-label">Contact Person</span>
+                <span className="bill-field-colon">:</span>
+                <span className="bill-field-value underline-field">{doc.clientInfo.contactPerson}</span>
+              </div>
+              <div className="bill-field-row">
+                <span className="bill-field-label">Email</span>
+                <span className="bill-field-colon">:</span>
+                <span className="bill-field-value underline-field">{doc.clientInfo.email}</span>
+              </div>
+              <div className="bill-field-row">
+                <span className="bill-field-label">Phone</span>
+                <span className="bill-field-colon">:</span>
+                <span className="bill-field-value underline-field">{doc.clientInfo.phone}</span>
+              </div>
+              <div className="bill-field-row">
+                <span className="bill-field-label">GSTIN (if applicable)</span>
+                <span className="bill-field-colon">:</span>
+                <span className="bill-field-value underline-field">{doc.clientInfo.gstin}</span>
+              </div>
+              <div className="bill-field-row">
+                <span className="bill-field-label">State</span>
+                <span className="bill-field-colon">:</span>
+                <span className="bill-field-value underline-field">{doc.clientInfo.state}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -137,49 +179,6 @@ export const InvoiceDocument: React.FC<Props> = ({
           </div>
         </div>
       </header>
-
-      {/* 2. Middle Row: Bill To Details (Image 1) & Healthcare Value Banner */}
-      <section className="invoice-middle-row">
-        {/* Bill To Column (Image 1) */}
-        <div className="invoice-bill-to-col">
-          <div className="bill-to-title-tag">Bill To</div>
-          <h2 className="bill-to-client-name">{doc.clientInfo.customerName}</h2>
-          <div className="bill-to-client-address">{doc.clientInfo.address}</div>
-
-          <div className="bill-to-fields-list">
-            <div className="bill-field-row">
-              <span className="bill-field-label">Billing Address & Branches</span>
-              <span className="bill-field-colon">:</span>
-              <span className="bill-field-value underline-field">{doc.clientInfo.branches}</span>
-            </div>
-            <div className="bill-field-row">
-              <span className="bill-field-label">Contact Person</span>
-              <span className="bill-field-colon">:</span>
-              <span className="bill-field-value underline-field">{doc.clientInfo.contactPerson}</span>
-            </div>
-            <div className="bill-field-row">
-              <span className="bill-field-label">Email</span>
-              <span className="bill-field-colon">:</span>
-              <span className="bill-field-value underline-field">{doc.clientInfo.email}</span>
-            </div>
-            <div className="bill-field-row">
-              <span className="bill-field-label">Phone</span>
-              <span className="bill-field-colon">:</span>
-              <span className="bill-field-value underline-field">{doc.clientInfo.phone}</span>
-            </div>
-            <div className="bill-field-row">
-              <span className="bill-field-label">GSTIN (if applicable)</span>
-              <span className="bill-field-colon">:</span>
-              <span className="bill-field-value underline-field">{doc.clientInfo.gstin}</span>
-            </div>
-            <div className="bill-field-row">
-              <span className="bill-field-label">State</span>
-              <span className="bill-field-colon">:</span>
-              <span className="bill-field-value underline-field">{doc.clientInfo.state}</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 3. Services & Line Items Table (Image 2) */}
       <section className="invoice-table-section">
