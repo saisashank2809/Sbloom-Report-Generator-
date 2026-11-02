@@ -20,6 +20,13 @@ The **sBLOOM Report Generator** is an enterprise-grade document creation and con
 
 ## 2. User Operating Manual (End-User Guide)
 
+### 2.0 Template Hub (Document Studio Starting Screen)
+When you first open the application, or when you click **`Templates Hub`** in the top navigation bar, you are presented with the **Template Selection Hub**:
+1. **Master Services Agreement (MSA) & SOW:** Multi-page contract with modular annexures (Social Media, GBP, Paid Ads, Website, SEO, SOW schedule, Onboarding checklist). Quick actions to **Open Agreement**, **New Blank**, or **Load Demo** (Kavety Multispeciality Hospital).
+2. **Tax Invoice Generator:** Single-page A4 commercial invoice formatted for healthcare clients with itemized services, editable branch locations, tax calculations, and bank payment instructions. Quick actions to **Open Tax Invoice**, **New Blank**, or **Load Demo** (Vizag IVF Centre).
+
+---
+
 ### 2.1 Workspace Views
 The application provides three operational layouts selectable from the top navigation bar:
 1. **Split View (Default):** Dual-pane interface with the 4-step configuration wizard on the left and the live document preview on the right.
@@ -95,6 +102,31 @@ If you need to make a quick adjustment to a specific sentence, change a clause, 
 * **Export Draft (`Save Draft`):** Downloads an offline `.json` backup file containing the complete client agreement configuration.
 * **Load Sample (`Load Sample`):** Restores the pre-configured demonstration data for rapid testing.
 * **New Document (`New Document`):** Clears all fields to start a clean contract from scratch.
+
+---
+
+### 2.6 Tax Invoice Generator (Operating Procedures)
+The Tax Invoice module replicates official commercial invoices modeled on `Vizag ivf centre aug26 invoice.pdf`:
+1. **Client "Bill To" Information (Image 1):**
+   * Customer / Hospital Name
+   * Primary Hospital Address
+   * Billing Address & Branches (underlined format for multiple regional branches)
+   * Contact Person, Email, Phone, GSTIN, and State
+2. **Services & Pricing Table (Image 2):**
+   * Dynamic line items: Click **`+ Add Service Row`** to add deliverables, or the trash icon to remove.
+   * Multi-line Description of Service (e.g. Website Development & Maintenance, Local SEO, GBP Management, Ads Management).
+   * Quantity / Remarks (supports formatted text like `4( considering four branches)` or numeric units).
+   * Rate (₹), Taxable Value, and GST % (0%, 5%, 12%, 18%).
+   * Auto-calculated GST Amount and Row Totals.
+   * Automated **Amount in Words** generator formatted in Indian Rupees (`Indian Rupees : Thirty Thousand Rupees Only`), with manual override capability.
+3. **Payment Details (Image 3):**
+   * Bank Name (`ICICI`), Account Name (`MEDCY HEALTH TECH PRIVATE LIMITED`), Account Number (`631605013978`), IFSC Code (`ICIC0006316`), and optional UPI ID (`medcy89522.ibz@icici`).
+4. **Terms, Notes & Authorization:**
+   * 3 customizable invoice notes and 5 numbered terms & conditions.
+   * Digital authorization seal and Director signature toggle.
+5. **WYSIWYG Direct Edit & Print:**
+   * Toggle **`Direct Edit Mode`** to click and edit any field directly on the preview sheet.
+   * Click **`Print / Export PDF`** for a flawless single-page A4 PDF output.
 
 ---
 

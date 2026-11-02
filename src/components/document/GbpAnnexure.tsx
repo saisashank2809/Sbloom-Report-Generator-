@@ -1,19 +1,24 @@
 import React from 'react';
 import type { DocumentData } from '../../types/document';
 import { formatINR } from '../../utils/pricingEngine';
+import { ExecutionSignaturesTable } from './ExecutionSignaturesTable';
 
 interface Props {
   doc: DocumentData;
   annexureLetter?: string;
   isComplimentaryBenefit?: boolean;
+  onCustomerSignatureClick?: () => void;
+  onProviderStampClick?: () => void;
 }
 
 export const GbpAnnexure: React.FC<Props> = ({ 
   doc, 
   annexureLetter = 'B', 
-  isComplimentaryBenefit
+  isComplimentaryBenefit,
+  onCustomerSignatureClick,
+  onProviderStampClick
 }) => {
-  const { gbp, clientInfo } = doc;
+  const { gbp } = doc;
   const isFree = isComplimentaryBenefit !== undefined 
     ? isComplimentaryBenefit 
     : Boolean(doc.selectedOfferings.socialMedia);
@@ -101,34 +106,11 @@ export const GbpAnnexure: React.FC<Props> = ({
       </div>
 
       {/* Annexure Signatures */}
-      <table className="doc-table doc-execution-table" style={{ marginTop: '20px' }}>
-        <thead>
-          <tr>
-            <th style={{ width: '50%' }}>Provider approval</th>
-            <th style={{ width: '50%' }}>Customer approval</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Name / title: <strong>{clientInfo.serviceProviderRep}</strong> ({clientInfo.serviceProviderTitle})</td>
-            <td>Name / title: <strong>{clientInfo.representativeName}</strong> ({clientInfo.representativeTitle})</td>
-          </tr>
-          <tr>
-            <td style={{ height: '55px', verticalAlign: 'bottom' }}>
-              <div className="sig-line"></div>
-              Signature / written acceptance:
-            </td>
-            <td style={{ height: '55px', verticalAlign: 'bottom' }}>
-              <div className="sig-line"></div>
-              Signature / written acceptance:
-            </td>
-          </tr>
-          <tr>
-            <td>Date: {clientInfo.effectiveDate}</td>
-            <td>Date: {clientInfo.effectiveDate}</td>
-          </tr>
-        </tbody>
-      </table>
+      <ExecutionSignaturesTable 
+        doc={doc} 
+        onCustomerSignatureClick={onCustomerSignatureClick} 
+        onProviderStampClick={onProviderStampClick}
+      />
 
       <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Google Business Profile Management</div>
     </div>

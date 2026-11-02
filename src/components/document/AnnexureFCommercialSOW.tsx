@@ -1,15 +1,24 @@
 import React from 'react';
 import type { DocumentData } from '../../types/document';
 import { type PricingSummary, formatINR } from '../../utils/pricingEngine';
+import { ExecutionSignaturesTable } from './ExecutionSignaturesTable';
 
 interface Props {
   doc: DocumentData;
   pricing: PricingSummary;
   annexureLetter?: string;
+  onCustomerSignatureClick?: () => void;
+  onProviderStampClick?: () => void;
 }
 
-export const AnnexureFCommercialSOW: React.FC<Props> = ({ doc, pricing, annexureLetter = 'F' }) => {
-  const { clientInfo, selectedOfferings, socialMedia, gbp, paidAds, website, seo } = doc;
+export const AnnexureFCommercialSOW: React.FC<Props> = ({ 
+  doc, 
+  pricing, 
+  annexureLetter = 'F',
+  onCustomerSignatureClick,
+  onProviderStampClick 
+}) => {
+  const { selectedOfferings, socialMedia, gbp, paidAds, website, seo } = doc;
 
   const isGbpFree = Boolean(selectedOfferings.socialMedia);
 
@@ -171,34 +180,13 @@ export const AnnexureFCommercialSOW: React.FC<Props> = ({ doc, pricing, annexure
       </div>
 
       {/* Signatures Table */}
-      <table className="doc-table doc-execution-table doc-compact-sig-table">
-        <thead>
-          <tr>
-            <th style={{ width: '50%' }}>For Service Provider</th>
-            <th style={{ width: '50%' }}>For Customer</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Name / title: <strong>{clientInfo.serviceProviderRep}</strong> ({clientInfo.serviceProviderTitle})</td>
-            <td>Name / title: <strong>{clientInfo.representativeName}</strong> ({clientInfo.representativeTitle})</td>
-          </tr>
-          <tr>
-            <td className="doc-compact-sig-cell">
-              <div className="sig-line" style={{ marginBottom: '4px' }}></div>
-              Signature / written acceptance:
-            </td>
-            <td className="doc-compact-sig-cell">
-              <div className="sig-line" style={{ marginBottom: '4px' }}></div>
-              Signature / written acceptance:
-            </td>
-          </tr>
-          <tr>
-            <td>Date: {clientInfo.effectiveDate}</td>
-            <td>Date: {clientInfo.effectiveDate}</td>
-          </tr>
-        </tbody>
-      </table>
+      <ExecutionSignaturesTable 
+        doc={doc} 
+        providerHeader="For Service Provider"
+        customerHeader="For Customer"
+        onCustomerSignatureClick={onCustomerSignatureClick} 
+        onProviderStampClick={onProviderStampClick}
+      />
 
       <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Consolidated Commercial Schedule / SOW</div>
     </div>

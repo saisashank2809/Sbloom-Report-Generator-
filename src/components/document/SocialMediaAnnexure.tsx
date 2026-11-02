@@ -1,13 +1,21 @@
 import React from 'react';
 import type { DocumentData } from '../../types/document';
 import { formatINR } from '../../utils/pricingEngine';
+import { ExecutionSignaturesTable } from './ExecutionSignaturesTable';
 
 interface Props {
   doc: DocumentData;
   annexureLetter?: string;
+  onCustomerSignatureClick?: () => void;
+  onProviderStampClick?: () => void;
 }
 
-export const SocialMediaAnnexure: React.FC<Props> = ({ doc, annexureLetter = 'A' }) => {
+export const SocialMediaAnnexure: React.FC<Props> = ({ 
+  doc, 
+  annexureLetter = 'A',
+  onCustomerSignatureClick,
+  onProviderStampClick 
+}) => {
   const { socialMedia, clientInfo } = doc;
 
   const filmingModelText = socialMedia.videoSupplier === 'agency_shoots'
@@ -103,34 +111,11 @@ export const SocialMediaAnnexure: React.FC<Props> = ({ doc, annexureLetter = 'A'
       </div>
 
       {/* Annexure Signatures */}
-      <table className="doc-table doc-execution-table doc-compact-sig-table">
-        <thead>
-          <tr>
-            <th style={{ width: '50%' }}>Provider approval</th>
-            <th style={{ width: '50%' }}>Customer approval</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Name / title: <strong>{clientInfo.serviceProviderRep}</strong> ({clientInfo.serviceProviderTitle})</td>
-            <td>Name / title: <strong>{clientInfo.representativeName}</strong> ({clientInfo.representativeTitle})</td>
-          </tr>
-          <tr>
-            <td className="doc-compact-sig-cell">
-              <div className="sig-line" style={{ marginBottom: '4px' }}></div>
-              Signature / written acceptance:
-            </td>
-            <td className="doc-compact-sig-cell">
-              <div className="sig-line" style={{ marginBottom: '4px' }}></div>
-              Signature / written acceptance:
-            </td>
-          </tr>
-          <tr>
-            <td>Date: {clientInfo.effectiveDate}</td>
-            <td>Date: {clientInfo.effectiveDate}</td>
-          </tr>
-        </tbody>
-      </table>
+      <ExecutionSignaturesTable 
+        doc={doc} 
+        onCustomerSignatureClick={onCustomerSignatureClick} 
+        onProviderStampClick={onProviderStampClick}
+      />
 
       <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Social Media & Content Services</div>
     </div>

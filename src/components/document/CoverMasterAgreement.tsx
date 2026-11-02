@@ -1,13 +1,21 @@
 import React from 'react';
 import type { DocumentData } from '../../types/document';
 import { MASTER_AGREEMENT_SECTIONS_V2 } from '../../config/masterAgreementTerms';
+import { PenTool, Stamp } from 'lucide-react';
 
 interface Props {
   doc: DocumentData;
   attachedAnnexuresList: string[];
+  onCustomerSignatureClick?: () => void;
+  onProviderStampClick?: () => void;
 }
 
-export const CoverMasterAgreement: React.FC<Props> = ({ doc, attachedAnnexuresList }) => {
+export const CoverMasterAgreement: React.FC<Props> = ({ 
+  doc, 
+  attachedAnnexuresList,
+  onCustomerSignatureClick,
+  onProviderStampClick 
+}) => {
   const { clientInfo } = doc;
 
   const annexuresText = attachedAnnexuresList.length > 0
@@ -236,11 +244,64 @@ export const CoverMasterAgreement: React.FC<Props> = ({ doc, attachedAnnexuresLi
                 <td><strong>Title:</strong> {clientInfo.representativeTitle}</td>
               </tr>
               <tr>
-                <td className="doc-compact-sig-cell">
+                <td className="doc-execution-sig-cell">
+                  <div 
+                    className="doc-sig-stamp-container doc-provider-sig-target is-clickable"
+                    onClick={onProviderStampClick}
+                    title="Click to choose between official provider stamps and signatures"
+                  >
+                    {doc.showProviderStamp !== false ? (
+                      <div className="doc-provider-stamp-box">
+                        <img 
+                          src={doc.providerSignatureData || '/invoice-authorized-sign.png'} 
+                          alt="Provider Official Seal & Signature" 
+                          className="doc-provider-stamp-img"
+                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                        />
+                        <div className="doc-sig-hover-tag doc-provider-hover-tag no-print">
+                          <span>Choose Signature</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="doc-sig-interactive-placeholder doc-provider-placeholder no-print">
+                        <Stamp size={13} className="doc-sig-icon" />
+                        <span className="doc-sig-action-text">Provider Official Stamp</span>
+                        <span className="doc-sig-sub-action">Click to choose signature / stamp</span>
+                      </div>
+                    )}
+                  </div>
                   <div className="sig-line" style={{ marginBottom: '4px' }}></div>
                   <strong>Signature:</strong>
                 </td>
-                <td className="doc-compact-sig-cell">
+                <td className="doc-execution-sig-cell">
+                  <div 
+                    className={`doc-sig-stamp-container doc-cust-sig-target ${doc.showCustomerSignature !== false ? 'is-clickable' : ''}`}
+                    onClick={doc.showCustomerSignature !== false ? onCustomerSignatureClick : undefined}
+                    title={doc.showCustomerSignature !== false ? (doc.customerSignatureData ? "Click to change or re-sign" : "Click to sign digitally") : undefined}
+                  >
+                    {doc.showCustomerSignature !== false ? (
+                      doc.customerSignatureData ? (
+                        <div className="doc-customer-sig-box">
+                          <img 
+                            src={doc.customerSignatureData} 
+                            alt="Customer Signature" 
+                            className="doc-customer-sig-img"
+                          />
+                          <div className="doc-sig-hover-tag no-print">
+                            <span>Click to Re-Sign</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="doc-sig-interactive-placeholder no-print">
+                          <PenTool size={13} className="doc-sig-icon" />
+                          <span className="doc-sig-action-text">Customer Digital Signature</span>
+                          <span className="doc-sig-sub-action">Click to sign / Stamp</span>
+                        </div>
+                      )
+                    ) : (
+                      <div className="doc-sig-empty-space" />
+                    )}
+                  </div>
                   <div className="sig-line" style={{ marginBottom: '4px' }}></div>
                   <strong>Signature:</strong>
                 </td>

@@ -1,14 +1,22 @@
 import React from 'react';
 import type { DocumentData } from '../../types/document';
 import { formatINR } from '../../utils/pricingEngine';
+import { ExecutionSignaturesTable } from './ExecutionSignaturesTable';
 
 interface Props {
   doc: DocumentData;
   annexureLetter?: string;
+  onCustomerSignatureClick?: () => void;
+  onProviderStampClick?: () => void;
 }
 
-export const WebsiteAnnexure: React.FC<Props> = ({ doc, annexureLetter = 'D' }) => {
-  const { website, clientInfo } = doc;
+export const WebsiteAnnexure: React.FC<Props> = ({ 
+  doc, 
+  annexureLetter = 'D',
+  onCustomerSignatureClick,
+  onProviderStampClick 
+}) => {
+  const { website } = doc;
 
   const projectTypeText = website.projectType === 'both'
     ? 'One-time build + Ongoing monthly maintenance'
@@ -111,34 +119,11 @@ export const WebsiteAnnexure: React.FC<Props> = ({ doc, annexureLetter = 'D' }) 
       </div>
 
       {/* Annexure Signatures */}
-      <table className="doc-table doc-execution-table" style={{ marginTop: '20px' }}>
-        <thead>
-          <tr>
-            <th style={{ width: '50%' }}>Provider approval</th>
-            <th style={{ width: '50%' }}>Customer approval</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Name / title: <strong>{clientInfo.serviceProviderRep}</strong> ({clientInfo.serviceProviderTitle})</td>
-            <td>Name / title: <strong>{clientInfo.representativeName}</strong> ({clientInfo.representativeTitle})</td>
-          </tr>
-          <tr>
-            <td style={{ height: '55px', verticalAlign: 'bottom' }}>
-              <div className="sig-line"></div>
-              Signature / written acceptance:
-            </td>
-            <td style={{ height: '55px', verticalAlign: 'bottom' }}>
-              <div className="sig-line"></div>
-              Signature / written acceptance:
-            </td>
-          </tr>
-          <tr>
-            <td>Date: {clientInfo.effectiveDate}</td>
-            <td>Date: {clientInfo.effectiveDate}</td>
-          </tr>
-        </tbody>
-      </table>
+      <ExecutionSignaturesTable 
+        doc={doc} 
+        onCustomerSignatureClick={onCustomerSignatureClick} 
+        onProviderStampClick={onProviderStampClick}
+      />
 
       <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Website Design, Development & Management</div>
     </div>

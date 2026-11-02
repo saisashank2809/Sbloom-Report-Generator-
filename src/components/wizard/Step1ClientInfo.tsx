@@ -79,8 +79,8 @@ export const Step1ClientInfo: React.FC<Props> = ({ clientInfo, onChange }) => {
         <div className="form-group col-span-2">
           <label className="form-label">Registered Office Address</label>
           <textarea
-            className="form-textarea"
-            rows={2}
+            className="form-textarea address-textarea"
+            rows={3}
             value={clientInfo.customerRegisteredAddress ?? clientInfo.address ?? ''}
             onChange={(e) => {
               const val = e.target.value;

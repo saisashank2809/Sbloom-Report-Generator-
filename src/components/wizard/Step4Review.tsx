@@ -1,20 +1,26 @@
 import React from 'react';
 import type { DocumentData } from '../../types/document';
 import { calculatePricingAndInclusions, formatINR } from '../../utils/pricingEngine';
-import { CheckCircle2, AlertTriangle, FileText, Printer, Download, Sparkles } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, FileText, Printer, Download, Sparkles, Stamp, PenTool } from 'lucide-react';
 
 interface Props {
   doc: DocumentData;
   onPreviewClick: () => void;
   onPrintClick: () => void;
   onExportJson: () => void;
+  onUpdateDoc?: (updater: (prev: DocumentData) => DocumentData) => void;
+  onOpenCustomerSigModal?: () => void;
+  onOpenProviderStampModal?: () => void;
 }
 
 export const Step4Review: React.FC<Props> = ({ 
   doc, 
   onPreviewClick, 
   onPrintClick, 
-  onExportJson 
+  onExportJson,
+  onUpdateDoc,
+  onOpenCustomerSigModal,
+  onOpenProviderStampModal
 }) => {
   const pricing = calculatePricingAndInclusions(doc);
 
@@ -143,6 +149,125 @@ export const Step4Review: React.FC<Props> = ({
             </li>
           ))}
         </ol>
+      </div>
+
+      {/* Execution Signatures & Stamping Control */}
+      <div className="commercial-card" style={{ marginTop: '16px' }}>
+        <div className="comm-header">
+          <h4>Execution Signatures & Official Stamping</h4>
+          <span className="badge-pill">Agreement & SOW</span>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginTop: '12px' }}>
+          {/* Provider Stamp Control */}
+          <div style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '12px', background: '#f8fafc' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Stamp size={15} className="text-primary" />
+                <strong style={{ fontSize: '0.85rem', color: '#1e293b' }}>Provider Approval Stamp</strong>
+              </div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.78rem' }}>
+                <input 
+                  type="checkbox"
+                  checked={doc.showProviderStamp !== false}
+                  onChange={(e) => onUpdateDoc?.(prev => ({ ...prev, showProviderStamp: e.target.checked }))}
+                />
+                Stamp on
+              </label>
+            </div>
+            {doc.showProviderStamp !== false ? (
+              <div 
+                style={{ height: '62px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', borderRadius: '4px', border: '1px solid #cbd5e1', padding: '4px', cursor: 'pointer' }}
+                onClick={onOpenProviderStampModal}
+                title="Click to choose between stamps & signatures"
+              >
+                <img 
+                  src={doc.providerSignatureData || '/invoice-authorized-sign.png'} 
+                  alt="Provider Stamp" 
+                  style={{ maxHeight: '54px', maxWidth: '100%', objectFit: 'contain' }}
+                />
+              </div>
+            ) : (
+              <div 
+                style={{ height: '62px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f1f5f9', borderRadius: '4px', color: '#64748b', fontSize: '0.75rem', textAlign: 'center', padding: '6px', cursor: 'pointer' }}
+                onClick={onOpenProviderStampModal}
+                title="Click to choose provider stamp"
+              >
+                + Choose Provider Stamp / Signature
+              </div>
+            )}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px' }}>
+              <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
+                {doc.clientInfo.serviceProviderRep} ({doc.clientInfo.serviceProviderTitle})
+              </span>
+              <button
+                type="button"
+                onClick={onOpenProviderStampModal}
+                style={{ background: 'none', border: 'none', color: '#0284c7', fontSize: '0.72rem', cursor: 'pointer', padding: 0, textDecoration: 'underline', fontWeight: 600 }}
+              >
+                Choose Signature
+              </button>
+            </div>
+          </div>
+
+          {/* Customer Signature Control */}
+          <div style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '12px', background: '#f8fafc' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <PenTool size={15} className="text-primary" />
+                <strong style={{ fontSize: '0.85rem', color: '#1e293b' }}>Customer Digital Sign</strong>
+              </div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '0.78rem' }}>
+                <input 
+                  type="checkbox"
+                  checked={doc.showCustomerSignature !== false}
+                  onChange={(e) => onUpdateDoc?.(prev => ({ ...prev, showCustomerSignature: e.target.checked }))}
+                />
+                Sign on
+              </label>
+            </div>
+            {doc.showCustomerSignature !== false ? (
+              doc.customerSignatureData ? (
+                <div 
+                  style={{ height: '62px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', borderRadius: '4px', border: '1px solid #cbd5e1', padding: '4px', cursor: 'pointer' }}
+                  onClick={onOpenCustomerSigModal}
+                  title="Click to change signature"
+                >
+                  <img 
+                    src={doc.customerSignatureData} 
+                    alt="Customer Signature" 
+                    style={{ maxHeight: '48px', maxWidth: '100%', objectFit: 'contain' }}
+                  />
+                </div>
+              ) : (
+                <div 
+                  style={{ height: '62px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f9ff', borderRadius: '4px', border: '1.5px dashed #0284c7', color: '#0284c7', fontSize: '0.75rem', cursor: 'pointer', fontWeight: 600 }}
+                  onClick={onOpenCustomerSigModal}
+                >
+                  + Add Digital Signature / Stamp
+                </div>
+              )
+            ) : (
+              <div style={{ height: '62px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f1f5f9', borderRadius: '4px', color: '#64748b', fontSize: '0.75rem', textAlign: 'center', padding: '6px' }}>
+                Blank line for manual physical signing
+              </div>
+            )}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px' }}>
+              <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
+                {doc.clientInfo.representativeName} ({doc.clientInfo.representativeTitle})
+              </span>
+              {doc.showCustomerSignature !== false && (
+                <button
+                  type="button"
+                  onClick={onOpenCustomerSigModal}
+                  style={{ background: 'none', border: 'none', color: '#0284c7', fontSize: '0.72rem', cursor: 'pointer', padding: 0, textDecoration: 'underline', fontWeight: 600 }}
+                >
+                  Change Signature
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Action buttons */}

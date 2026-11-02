@@ -137,6 +137,10 @@ export interface DocumentData {
   onboarding: OnboardingConfig;
   specialTerms?: string;
   customNotes?: string;
+  showProviderStamp?: boolean;
+  providerSignatureData?: string;
+  showCustomerSignature?: boolean;
+  customerSignatureData?: string;
   createdAt: string;
   updatedAt: string;
   status: 'draft' | 'finalized';

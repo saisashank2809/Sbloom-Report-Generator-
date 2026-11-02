@@ -1,12 +1,20 @@
 import React from 'react';
 import type { DocumentData } from '../../types/document';
+import { ExecutionSignaturesTable } from './ExecutionSignaturesTable';
 
 interface Props {
   doc: DocumentData;
   annexureLetter?: string;
+  onCustomerSignatureClick?: () => void;
+  onProviderStampClick?: () => void;
 }
 
-export const AnnexureGOnboardingChecklist: React.FC<Props> = ({ doc, annexureLetter = 'G' }) => {
+export const AnnexureGOnboardingChecklist: React.FC<Props> = ({ 
+  doc, 
+  annexureLetter = 'G',
+  onCustomerSignatureClick,
+  onProviderStampClick 
+}) => {
   const { clientInfo, onboarding } = doc;
 
   const checklistItems = [
@@ -101,34 +109,14 @@ export const AnnexureGOnboardingChecklist: React.FC<Props> = ({ doc, annexureLet
       </div>
 
       {/* Signature block */}
-      <table className="doc-table doc-execution-table doc-compact-sig-table">
-        <thead>
-          <tr>
-            <th style={{ width: '50%' }}>Onboarding Verified By (sBLOOM)</th>
-            <th style={{ width: '50%' }}>Customer Onboarding Lead</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Name / title: <strong>{clientInfo.serviceProviderRep}</strong> ({clientInfo.serviceProviderTitle})</td>
-            <td>Name / title: <strong>{clientInfo.representativeName}</strong> ({clientInfo.representativeTitle})</td>
-          </tr>
-          <tr>
-            <td className="doc-compact-sig-cell">
-              <div className="sig-line" style={{ marginBottom: '4px' }}></div>
-              Signature:
-            </td>
-            <td className="doc-compact-sig-cell">
-              <div className="sig-line" style={{ marginBottom: '4px' }}></div>
-              Signature:
-            </td>
-          </tr>
-          <tr>
-            <td>Date: {clientInfo.effectiveDate}</td>
-            <td>Date: {clientInfo.effectiveDate}</td>
-          </tr>
-        </tbody>
-      </table>
+      <ExecutionSignaturesTable 
+        doc={doc} 
+        providerHeader="Onboarding Verified By (sBLOOM)"
+        customerHeader="Customer Onboarding Lead"
+        signatureLabel="Signature:"
+        onCustomerSignatureClick={onCustomerSignatureClick} 
+        onProviderStampClick={onProviderStampClick}
+      />
 
       <div className="doc-page-footer">PRIVATE & CONFIDENTIAL | Annexure {annexureLetter} — Customer Onboarding Checklist</div>
     </div>

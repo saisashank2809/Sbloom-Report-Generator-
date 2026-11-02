@@ -121,5 +121,9 @@ export const DEFAULT_DOCUMENT_DATA: DocumentData = {
     delegatedAccessStatus: 'To be provisioned via Meta Business Manager & Google MCC'
   },
   specialTerms: 'None. Standard terms and conditions apply without variation.',
-  customNotes: 'SMM trial includes 1 month complimentary onboarding. Advertising spend is payable directly by Customer to Google/Meta.'
+  customNotes: 'SMM trial includes 1 month complimentary onboarding. Advertising spend is payable directly by Customer to Google/Meta.',
+  showProviderStamp: true,
+  providerSignatureData: '/invoice-authorized-sign.png',
+  showCustomerSignature: true,
+  customerSignatureData: '/customer-signature-radhika.png'
 };
